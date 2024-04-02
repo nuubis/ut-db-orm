@@ -47,12 +47,9 @@ def create():
 
 
 def get_post(id, check_author=True):
-    post = None  # TODO remove if you strart with assignment
-    # TODO
-    # post = get_db().execute(
-    #     '',
-    #     ()
-    # ).fetchone()
+    post = get_db().execute(
+        f"select * from post where id = {id}"
+    ).fetchone()
 
     if post is None:
         abort(404, f"Post id {id} doesn't exist.")
@@ -80,11 +77,11 @@ def update(id):
             flash(error)
         else:
             db = get_db()
-            ##TODO implement
-            # db.execute(
-            #     '',
-            #     ()
-            # )
+            db.execute(
+                'update post set title = ?, body = ? where id = ?',
+                (title, body, str(id))
+                # f"UPDATE post SET body = {body} WHERE id = {id}"
+            )
             db.commit()
             return redirect(url_for('blog.index'))
 
